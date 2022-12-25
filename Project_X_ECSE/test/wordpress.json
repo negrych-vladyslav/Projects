@@ -1,0 +1,55 @@
+[
+    { "name" : "wordpress",
+      "image" : "wordpress:6.01-php7.4-fpm",
+      "memory": 800,
+      "cpu": 1024,
+      "mountPoints" : [
+        {
+          "containerPath" : "/var/www/html",
+          "sourceVolume" : "nfs-storage"
+        }
+      ],
+      "essential" : true,
+      "portMappings" : [
+        {
+          "containerPort" : 9000
+        }
+      ],
+      "environment" : [
+        {
+          "name" : "WORDPRESS_DB_USER",
+          "value" : "${local.rds_username}"
+        },
+        {
+          "name" : "WORDPRESS_DB_HOST",
+          "value" : "mysqldb.cbvhjwlvuevz.eu-west-1.rds.amazonaws.com"
+        },
+        {
+          "name" : "WORDPRESS_DB_PASSWORD",
+          "value" : "${local.rds_password}"
+        },
+        {
+          "name" : "WORDPRESS_DB_NAME",
+          "value" : "wordpress"
+        }
+      ]
+    },
+    {
+      "name" : "nginx",
+      "image" : "075589242607.dkr.ecr.eu-west-1.amazonaws.com/nginx",
+      "memory": 800,
+      "cpu": 1024,
+      "mountPoints" : [
+        {
+          "containerPath" : "/var/www/html",
+          "sourceVolume" : "nfs-storage"
+        }
+      ],
+      "essential" : true,
+      "portMappings" : [
+        {
+          "containerPort" : 80
+        }
+      ]
+    }
+  ]
